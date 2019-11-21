@@ -4,42 +4,47 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-x1  = [1, 2, 3, 4, 5]
-y1 =  [1, 2, 3, 4, 5]
+time            = [0] #seconds
+host_speed      = [130] #kmph
+follow_speed    = [120] #kmph
+host_bt         = 2 #seconds
+host_acc        = -7  #m/s^2
+follow_acc      = -5  #m/s^2
+follow_rt       = 3 #seconds
 
-x2  = [1, 2, 3, 4, 5]
-y2 = [1, 4, 9, 16, 25]
 
-plt.subplot(2,1,1)
-plt.subplots_adjust(hspace=0.5)
-plt.plot(x1,y1,'r')
+
+for y in range(0,10,1):
+
+    x = y+1
+
+    time.append(x)
+
+    if y >= host_bt:
+        host_speed.append( ((host_speed[x-1]/3.6) + ( (time[x] - time[y]) * host_acc)) * 3.6 )
+    else:
+        host_speed.append(host_speed[x-1])
+
+    if y >= follow_rt:
+        follow_speed.append(((follow_speed[x-1]/3.6) + ( (time[x] - time[y]) * follow_acc)) * 3.6)
+    else:
+        follow_speed.append(follow_speed[x-1])
+
+    print(time,host_speed,follow_speed)
+
+
+
+
+
+
+plt.plot(time,host_speed,'r')
+plt.plot(time,follow_speed,'b')
+plt.ylim(0,150)
+plt.xlim(0,10)
+plt.xlabel('TIME')
+plt.ylabel('SPEED')
 plt.grid()
-plt.xlabel('x1 axis')
-plt.ylabel('y1 axis')
-plt.title('linear')
-
-plt.subplot(2,1,2)
-plt.plot(x2,y2,'b')
-plt.grid()
-plt.xlabel('x2 axis')
-plt.ylabel('y2 axis')
-plt.title('quadratic')
+plt.title('SPEED SIMULATION')
 
 #plt.show()
-plt.savefig('plot.png') #This is must for plotting graphs in the web based environment
-
-x  = [1, 2, 3, 4, 5]
-y = [1, 4, 9, 16, 25]
-z= np.random.standard_normal(1000)
-
-plt.clf() #This is needed to remove the current figure for using it to plot different graph
-
-plt.hist(z,bins = 20,label="histogram", color="blue")
-plt.xlabel("x axis")
-plt.ylabel("y axis")
-plt.title("histogram Example")
-plt.grid()
-plt.legend()
-
-#plt.show()
-plt.savefig('hist.png') #This is must for plotting graphs in the web based environment
+plt.savefig('Speed.png') #This is must for plotting graphs in the web based environment
